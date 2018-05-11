@@ -2,7 +2,7 @@
     {!! Form::label('name', 'Name') !!}
     {!! Form::text('name', null, ['class' => 'form-control', 'id' => 'name']) !!}
     @if ($errors->has('name'))
-        {{ $errors->first('name') }}
+        <p class="text-danger">{{ $errors->first('name') }}</p>
     @endif
 </div>
 <div class="form-group">

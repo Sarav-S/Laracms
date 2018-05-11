@@ -15,6 +15,8 @@ class Post extends Model
         'meta_keywords', 'status', 'featured_image', 'category_id'
     ];
 
+    // protected $appends = ['created_on'];
+
     /**
      * Returns the status label based on value
      * 
@@ -23,6 +25,11 @@ class Post extends Model
     public function getStatusLabelAttribute() : string
     {
         return $this->status ? "Enabled" : "Disabled";
+    }
+
+    public function getCreatedOnAttribute() : string
+    {
+        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y');
     }
 
     /**
