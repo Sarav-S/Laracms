@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Post;
+use App\{Post, Category};
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,7 +19,7 @@ class PostController extends Controller
     public function index() : View
     {
         $posts = Post::withTrashed()->with('category')->paginate();
-        return view('admin.posts.index', compact('posts'))
+        return view('admin.posts.index', compact('posts'));
     }
 
     /**
@@ -71,7 +71,7 @@ class PostController extends Controller
     public function edit(Post $post) : View
     {
         $categories = Category::pluck('name', 'id')->toArray();
-        return view('admin.posts.create', compact('categories', 'post'));
+        return view('admin.posts.edit', compact('categories', 'post'));
     }
 
     /**
@@ -84,7 +84,7 @@ class PostController extends Controller
      */
     public function update(UpdateRequest $request, Post $post) : RedirectResponse
     {
-        $post = Post::update(
+        $post = $post->update(
             [
                 'title'            => $request->title,
                 'slug'             => $request->slug,
@@ -117,16 +117,18 @@ class PostController extends Controller
         } else {
 
         }
+
+        return back();
     }
 
     /**
      * Recover the specified resource from storage.
      *
-     * @param \App\Category $category Category instance
+     * @param \App\Post $post Post instance
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function recover(Category $post) : RedirectResponse
+    public function recover(Post $post) : RedirectResponse
     {
         if ($post->restore()) {
 

@@ -4,18 +4,8 @@ namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class UpdateRequest extends StoreRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return false;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,8 +13,14 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
+        $id = decode(request()->segment(3));
+
         return [
-            //
+            'title'          => 'required|max:255',
+            'slug'           => 'required|max:255|unique:posts,slug,'.$id,
+            'description'    => 'required',
+            'category_id'    => 'nullable|exists:categories,id',
+            'featured_image' => 'nullable|image'
         ];
     }
 }

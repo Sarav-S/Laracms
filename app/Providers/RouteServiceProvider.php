@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Category;
+use App\{Post, Category};
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -30,6 +30,13 @@ class RouteServiceProvider extends ServiceProvider
             'category', 
             function ($id) {
                 return Category::where('id', decode($id))->withTrashed()->first() ?? abort(404);
+            }
+        );
+
+        Route::bind(
+            'post',
+            function ($id) {
+                return Post::where('id', decode($id))->withTrashed()->first() ?? abort(404);
             }
         );
     }
